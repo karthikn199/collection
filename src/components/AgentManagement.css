@@ -1,0 +1,41 @@
+.agent-management {
+  width: 100%;
+}
+
+.status-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.status-badge.active {
+  background: #d4edda;
+  color: #155724;
+}
+
+.status-badge.inactive {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.btn-warning {
+  background: #ffc107;
+  color: #000;
+  margin-right: 0.5rem;
+}
+
+.btn-warning:hover {
+  background: #e0a800;
+}
+
+.btn-success {
+  background: #28a745;
+  color: white;
+  margin-right: 0.5rem;
+}
+
+.btn-success:hover {
+  background: #218838;
+}
+
