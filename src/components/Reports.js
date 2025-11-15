@@ -156,12 +156,12 @@ const Reports = () => {
                 .sort((a, b) => new Date(b.collectionDate) - new Date(a.collectionDate))
                 .map((collection) => (
                   <tr key={collection.id}>
-                    <td>{new Date(collection.collectionDate).toLocaleDateString()}</td>
-                    <td>{collection.customerName}</td>
-                    <td>{collection.agentName || 'Not Assigned'}</td>
-                    <td>₹{collection.loanAmount.toLocaleString()}</td>
-                    <td className="amount">₹{collection.amount.toLocaleString()}</td>
-                    <td>{collection.notes || '-'}</td>
+                    <td data-label="Date">{new Date(collection.collectionDate).toLocaleDateString()}</td>
+                    <td data-label="Customer">{collection.customerName}</td>
+                    <td data-label="Agent">{collection.agentName || 'Not Assigned'}</td>
+                    <td data-label="Loan Amount">₹{collection.loanAmount.toLocaleString()}</td>
+                    <td data-label="Collection Amount" className="amount">₹{collection.amount.toLocaleString()}</td>
+                    <td data-label="Notes">{collection.notes || '-'}</td>
                   </tr>
                 ))}
             </tbody>

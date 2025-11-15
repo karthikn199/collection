@@ -170,23 +170,25 @@ const CustomerMaster = () => {
             <tbody>
               {customers.map((customer) => (
                 <tr key={customer.id}>
-                  <td>{customer.name}</td>
-                  <td>{customer.phone}</td>
-                  <td>{customer.address || '-'}</td>
-                  <td>{customer.email || '-'}</td>
-                  <td>
-                    <button
-                      className="btn btn-sm btn-edit"
-                      onClick={() => handleEdit(customer)}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      className="btn btn-sm btn-delete"
-                      onClick={() => handleDelete(customer.id)}
-                    >
-                      Delete
-                    </button>
+                  <td data-label="Name">{customer.name}</td>
+                  <td data-label="Phone">{customer.phone}</td>
+                  <td data-label="Address">{customer.address || '-'}</td>
+                  <td data-label="Email">{customer.email || '-'}</td>
+                  <td data-label="Actions">
+                    <div className="action-buttons">
+                      <button
+                        className="btn btn-sm btn-edit"
+                        onClick={() => handleEdit(customer)}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="btn btn-sm btn-delete"
+                        onClick={() => handleDelete(customer.id)}
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}

@@ -224,10 +224,10 @@ const AgentManagement = () => {
             <tbody>
               {agents.map((agent) => (
                 <tr key={agent.id}>
-                  <td>{agent.name}</td>
-                  <td>{agent.email}</td>
-                  <td>{agent.phone || "-"}</td>
-                  <td>
+                  <td data-label="Name">{agent.name}</td>
+                  <td data-label="Email">{agent.email}</td>
+                  <td data-label="Phone">{agent.phone || "-"}</td>
+                  <td data-label="Status">
                     <span
                       className={`status-badge ${
                         agent.isActive ? "active" : "inactive"
@@ -236,27 +236,29 @@ const AgentManagement = () => {
                       {agent.isActive ? "Active" : "Inactive"}
                     </span>
                   </td>
-                  <td>
-                    <button
-                      className="btn btn-sm btn-edit"
-                      onClick={() => handleEdit(agent)}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      className={`btn btn-sm ${
-                        agent.isActive ? "btn-warning" : "btn-success"
-                      }`}
-                      onClick={() => handleToggleActive(agent)}
-                    >
-                      {agent.isActive ? "Deactivate" : "Activate"}
-                    </button>
-                    <button
-                      className="btn btn-sm btn-delete"
-                      onClick={() => handleDelete(agent.id)}
-                    >
-                      Delete
-                    </button>
+                  <td data-label="Actions">
+                    <div className="action-buttons">
+                      <button
+                        className="btn btn-sm btn-edit"
+                        onClick={() => handleEdit(agent)}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className={`btn btn-sm ${
+                          agent.isActive ? "btn-warning" : "btn-success"
+                        }`}
+                        onClick={() => handleToggleActive(agent)}
+                      >
+                        {agent.isActive ? "Deactivate" : "Activate"}
+                      </button>
+                      <button
+                        className="btn btn-sm btn-delete"
+                        onClick={() => handleDelete(agent.id)}
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}

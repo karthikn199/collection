@@ -230,19 +230,21 @@ const CollectionLoans = () => {
                 .sort((a, b) => new Date(b.collectionDate) - new Date(a.collectionDate))
                 .map((collection) => (
                   <tr key={collection.id}>
-                    <td>{new Date(collection.collectionDate).toLocaleDateString()}</td>
-                    <td>{collection.customerName}</td>
-                    <td>{collection.agentName || 'Not Assigned'}</td>
-                    <td>₹{collection.loanAmount.toLocaleString()}</td>
-                    <td className="amount">₹{collection.amount.toLocaleString()}</td>
-                    <td>{collection.notes || '-'}</td>
-                    <td>
-                      <button
-                        className="btn btn-sm btn-delete"
-                        onClick={() => handleDelete(collection.id)}
-                      >
-                        Delete
-                      </button>
+                    <td data-label="Date">{new Date(collection.collectionDate).toLocaleDateString()}</td>
+                    <td data-label="Customer">{collection.customerName}</td>
+                    <td data-label="Agent">{collection.agentName || 'Not Assigned'}</td>
+                    <td data-label="Loan Amount">₹{collection.loanAmount.toLocaleString()}</td>
+                    <td data-label="Collection Amount" className="amount">₹{collection.amount.toLocaleString()}</td>
+                    <td data-label="Notes">{collection.notes || '-'}</td>
+                    <td data-label="Actions">
+                      <div className="action-buttons">
+                        <button
+                          className="btn btn-sm btn-delete"
+                          onClick={() => handleDelete(collection.id)}
+                        >
+                          Delete
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}

@@ -189,9 +189,9 @@ const Dashboard = () => {
                 <tbody>
                   {recentCollections.map((collection) => (
                     <tr key={collection.id}>
-                      <td>{new Date(collection.collectionDate).toLocaleDateString()}</td>
-                      <td>{collection.customerName}</td>
-                      <td className="amount">₹{collection.amount.toLocaleString()}</td>
+                      <td data-label="Date">{new Date(collection.collectionDate).toLocaleDateString()}</td>
+                      <td data-label="Customer">{collection.customerName}</td>
+                      <td data-label="Amount" className="amount">₹{collection.amount.toLocaleString()}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -218,8 +218,8 @@ const Dashboard = () => {
                 <tbody>
                   {topCustomers.map((customer, index) => (
                     <tr key={index}>
-                      <td>{customer.name}</td>
-                      <td className="amount">₹{customer.total.toLocaleString()}</td>
+                      <td data-label="Customer">{customer.name}</td>
+                      <td data-label="Total Collected" className="amount">₹{customer.total.toLocaleString()}</td>
                     </tr>
                   ))}
                 </tbody>

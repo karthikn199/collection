@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { storageService, generateId } from '../services/storageService';
-import { authService } from '../services/authService';
-import './CustomerLoanMapping.css';
+import React, { useEffect, useState } from "react";
+import { authService } from "../services/authService";
+import { generateId, storageService } from "../services/storageService";
+import "./CustomerLoanMapping.css";
 
 const CustomerLoanMapping = () => {
   const [mappings, setMappings] = useState([]);
@@ -11,10 +11,10 @@ const CustomerLoanMapping = () => {
   const [collectionsMap, setCollectionsMap] = useState({});
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({
-    customerId: '',
-    loanId: '',
-    agentId: '',
-    startDate: new Date().toISOString().split('T')[0]
+    customerId: "",
+    loanId: "",
+    agentId: "",
+    startDate: new Date().toISOString().split("T")[0],
   });
 
   useEffect(() => {
@@ -26,51 +26,52 @@ const CustomerLoanMapping = () => {
       const session = authService.getCurrentSession();
       const companyId = session?.user?.companyId;
       if (!companyId) {
-        console.error('Company ID not found');
+        console.error("Company ID not found");
         return;
       }
-      const [customersData, loansData, mappingsData, agentsData] = await Promise.all([
-        storageService.getCustomers(companyId),
-        storageService.getLoans(companyId),
-        storageService.getMappings(companyId),
-        storageService.getUsersByCompany(companyId)
-      ]);
+      const [customersData, loansData, mappingsData, agentsData] =
+        await Promise.all([
+          storageService.getCustomers(companyId),
+          storageService.getLoans(companyId),
+          storageService.getMappings(companyId),
+          storageService.getUsersByCompany(companyId),
+        ]);
       setCustomers(customersData);
       setLoans(loansData);
       setMappings(mappingsData);
       // Filter only active agents
-      setAgents(agentsData.filter(u => u.role === 'agent' && u.isActive));
+      setAgents(agentsData.filter((u) => u.role === "agent" && u.isActive));
     } catch (error) {
-      console.error('Error loading data:', error);
+      console.error("Error loading data:", error);
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    const customer = customers.find(c => c.id === formData.customerId);
-    const loan = loans.find(l => l.id === formData.loanId);
-    
+
+    const customer = customers.find((c) => c.id === formData.customerId);
+    const loan = loans.find((l) => l.id === formData.loanId);
+
     if (!customer || !loan) {
-      alert('Please select valid customer and loan');
+      alert("Please select valid customer and loan");
       return;
     }
 
     const session = authService.getCurrentSession();
     const companyId = session?.user?.companyId;
     if (!companyId) {
-      alert('Company ID not found. Please login again.');
+      alert("Company ID not found. Please login again.");
       return;
     }
 
     if (!formData.agentId) {
-      alert('Please select an agent');
+      alert("Please select an agent");
       return;
     }
 
-    const agent = agents.find(a => a.id === formData.agentId);
+    const agent = agents.find((a) => a.id === formData.agentId);
     if (!agent) {
-      alert('Selected agent not found');
+      alert("Selected agent not found");
       return;
     }
 
@@ -85,7 +86,7 @@ const CustomerLoanMapping = () => {
       loanAmount: loan.loanAmount,
       dailyCollection: loan.dailyCollection,
       startDate: formData.startDate,
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
     };
 
     try {
@@ -93,41 +94,47 @@ const CustomerLoanMapping = () => {
       await loadData();
       resetForm();
     } catch (error) {
-      console.error('Error saving mapping:', error);
-      alert('Failed to save mapping. Please try again.');
+      console.error("Error saving mapping:", error);
+      alert("Failed to save mapping. Please try again.");
     }
   };
 
   const handleDelete = async (mapping) => {
-    if (window.confirm('Are you sure you want to delete this mapping? This will also delete all collection records.')) {
+    if (
+      window.confirm(
+        "Are you sure you want to delete this mapping? This will also delete all collection records."
+      )
+    ) {
       try {
         await storageService.deleteMapping(mapping.customerId, mapping.loanId);
         await loadData();
       } catch (error) {
-        console.error('Error deleting mapping:', error);
-        alert('Failed to delete mapping. Please try again.');
+        console.error("Error deleting mapping:", error);
+        alert("Failed to delete mapping. Please try again.");
       }
     }
   };
 
   const resetForm = () => {
     setFormData({
-      customerId: '',
-      loanId: '',
-      agentId: '',
-      startDate: new Date().toISOString().split('T')[0]
+      customerId: "",
+      loanId: "",
+      agentId: "",
+      startDate: new Date().toISOString().split("T")[0],
     });
     setShowForm(false);
   };
 
   const getCustomerName = (customerId) => {
-    const customer = customers.find(c => c.id === customerId);
-    return customer ? customer.name : 'Unknown';
+    const customer = customers.find((c) => c.id === customerId);
+    return customer ? customer.name : "Unknown";
   };
 
   const getLoanDetails = (loanId) => {
-    const loan = loans.find(l => l.id === loanId);
-    return loan ? `₹${loan.loanAmount} (₹${loan.dailyCollection}/day)` : 'Unknown';
+    const loan = loans.find((l) => l.id === loanId);
+    return loan
+      ? `₹${loan.loanAmount} (₹${loan.dailyCollection}/day)`
+      : "Unknown";
   };
 
   useEffect(() => {
@@ -143,11 +150,14 @@ const CustomerLoanMapping = () => {
           mapping.loanId
         );
         const key = `${mapping.customerId}-${mapping.loanId}`;
-        map[key] = collections.reduce((sum, c) => sum + parseFloat(c.amount), 0);
+        map[key] = collections.reduce(
+          (sum, c) => sum + parseFloat(c.amount),
+          0
+        );
       }
       setCollectionsMap(map);
     } catch (error) {
-      console.error('Error loading collections:', error);
+      console.error("Error loading collections:", error);
     }
   };
 
@@ -180,10 +190,12 @@ const CustomerLoanMapping = () => {
                 <select
                   required
                   value={formData.customerId}
-                  onChange={(e) => setFormData({ ...formData, customerId: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, customerId: e.target.value })
+                  }
                 >
                   <option value="">Select Customer</option>
-                  {customers.map(customer => (
+                  {customers.map((customer) => (
                     <option key={customer.id} value={customer.id}>
                       {customer.name} - {customer.phone}
                     </option>
@@ -195,10 +207,12 @@ const CustomerLoanMapping = () => {
                 <select
                   required
                   value={formData.loanId}
-                  onChange={(e) => setFormData({ ...formData, loanId: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, loanId: e.target.value })
+                  }
                 >
                   <option value="">Select Loan Template</option>
-                  {loans.map(loan => (
+                  {loans.map((loan) => (
                     <option key={loan.id} value={loan.id}>
                       ₹{loan.loanAmount} - ₹{loan.dailyCollection}/day
                     </option>
@@ -210,10 +224,12 @@ const CustomerLoanMapping = () => {
                 <select
                   required
                   value={formData.agentId}
-                  onChange={(e) => setFormData({ ...formData, agentId: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, agentId: e.target.value })
+                  }
                 >
                   <option value="">Select Agent</option>
-                  {agents.map(agent => (
+                  {agents.map((agent) => (
                     <option key={agent.id} value={agent.id}>
                       {agent.name} - {agent.email}
                     </option>
@@ -226,14 +242,20 @@ const CustomerLoanMapping = () => {
                   type="date"
                   required
                   value={formData.startDate}
-                  onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, startDate: e.target.value })
+                  }
                 />
               </div>
               <div className="form-actions">
                 <button type="submit" className="btn btn-primary">
                   Create Mapping
                 </button>
-                <button type="button" className="btn btn-secondary" onClick={resetForm}>
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={resetForm}
+                >
                   Cancel
                 </button>
               </div>
@@ -245,7 +267,9 @@ const CustomerLoanMapping = () => {
       <div className="table-container">
         {mappings.length === 0 ? (
           <div className="empty-state">
-            <p>No mappings found. Create a mapping to link customers with loans.</p>
+            <p>
+              No mappings found. Create a mapping to link customers with loans.
+            </p>
           </div>
         ) : (
           <table className="data-table">
@@ -267,22 +291,37 @@ const CustomerLoanMapping = () => {
                 const remaining = getRemainingAmount(mapping);
                 return (
                   <tr key={mapping.id}>
-                    <td>{mapping.customerName}</td>
-                    <td>{mapping.agentName || 'Not Assigned'}</td>
-                    <td>₹{mapping.loanAmount.toLocaleString()}</td>
-                    <td>₹{mapping.dailyCollection.toLocaleString()}</td>
-                    <td>{new Date(mapping.startDate).toLocaleDateString()}</td>
-                    <td>₹{totalCollected.toLocaleString()}</td>
-                    <td className={remaining > 0 ? 'remaining' : 'completed'}>
+                    <td data-label="Customer">{mapping.customerName}</td>
+                    <td data-label="Agent">
+                      {mapping.agentName || "Not Assigned"}
+                    </td>
+                    <td data-label="Loan Amount">
+                      ₹{mapping.loanAmount.toLocaleString()}
+                    </td>
+                    <td data-label="Daily Collection">
+                      ₹{mapping.dailyCollection.toLocaleString()}
+                    </td>
+                    <td data-label="Start Date">
+                      {new Date(mapping.startDate).toLocaleDateString()}
+                    </td>
+                    <td data-label="Collected">
+                      ₹{totalCollected.toLocaleString()}
+                    </td>
+                    <td
+                      data-label="Remaining"
+                      className={remaining > 0 ? "remaining" : "completed"}
+                    >
                       ₹{remaining.toLocaleString()}
                     </td>
-                    <td>
-                      <button
-                        className="btn btn-sm btn-delete"
-                        onClick={() => handleDelete(mapping)}
-                      >
-                        Delete
-                      </button>
+                    <td data-label="Actions">
+                      <div className="action-buttons">
+                        <button
+                          className="btn btn-sm btn-delete"
+                          onClick={() => handleDelete(mapping)}
+                        >
+                          Delete
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 );
@@ -296,5 +335,3 @@ const CustomerLoanMapping = () => {
 };
 
 export default CustomerLoanMapping;
-
-

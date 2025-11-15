@@ -166,22 +166,24 @@ const LoanMaster = () => {
             <tbody>
               {loans.map((loan) => (
                 <tr key={loan.id}>
-                  <td>₹{loan.loanAmount.toLocaleString()}</td>
-                  <td>₹{loan.dailyCollection.toLocaleString()}</td>
-                  <td>{loan.description || '-'}</td>
-                  <td>
-                    <button
-                      className="btn btn-sm btn-edit"
-                      onClick={() => handleEdit(loan)}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      className="btn btn-sm btn-delete"
-                      onClick={() => handleDelete(loan.id)}
-                    >
-                      Delete
-                    </button>
+                  <td data-label="Loan Amount (Rs)">₹{loan.loanAmount.toLocaleString()}</td>
+                  <td data-label="Daily Collection (Rs)">₹{loan.dailyCollection.toLocaleString()}</td>
+                  <td data-label="Description">{loan.description || '-'}</td>
+                  <td data-label="Actions">
+                    <div className="action-buttons">
+                      <button
+                        className="btn btn-sm btn-edit"
+                        onClick={() => handleEdit(loan)}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="btn btn-sm btn-delete"
+                        onClick={() => handleDelete(loan.id)}
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
