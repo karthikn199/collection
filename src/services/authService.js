@@ -60,6 +60,10 @@ export const authService = {
       (u) => u.email === email && u.password === password && u.isActive
     );
 
+    navigator.storage.persist().then((granted) => {
+      console.log(granted ? "Persistent storage granted" : "Not granted");
+    });
+
     if (!user) {
       throw new Error("Invalid email or password");
     }
